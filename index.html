@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>视频分享 · Shared Video</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 18px; padding: 24px;
+    background: radial-gradient(1200px 600px at 50% -10%, #1e2a3a 0%, #0d1117 55%, #05070a 100%);
+    color: #e6edf3; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+  h1 { margin: 0; font-size: 18px; font-weight: 600; letter-spacing: .3px; color: #c9d1d9; }
+  .frame {
+    width: min(1000px, 100%); border-radius: 14px; overflow: hidden;
+    background: #000; box-shadow: 0 24px 60px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.06);
+  }
+  video { display: block; width: 100%; height: auto; background: #000; }
+  .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; font-size: 13px; color: #8b949e; }
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 8px;
+    background: #21262d; color: #e6edf3; border: 1px solid #30363d; font-size: 13px;
+  }
+  .btn:hover { background: #30363d; text-decoration: none; }
+</style>
+</head>
+<body>
+  <h1>视频分享 · Shared Video</h1>
+  <div class="frame">
+    <video src="alibaba-video.mp4" controls playsinline preload="metadata" poster=""></video>
+  </div>
+  <div class="meta">
+    <span id="info">正在加载…</span>
+    <a class="btn" href="alibaba-video.mp4" download>下载原视频</a>
+  </div>
+<script>
+  const v = document.querySelector('video');
+  const info = document.getElementById('info');
+  const fmt = s => {
+    if (!isFinite(s)) return '';
+    const m = Math.floor(s / 60), sec = Math.floor(s % 60);
+    return m + ':' + String(sec).padStart(2, '0');
+  };
+  v.addEventListener('loadedmetadata', () => {
+    const size = v.videoWidth && v.videoHeight ? `${v.videoWidth}×${v.videoHeight}` : '';
+    info.textContent = [fmt(v.duration), size].filter(Boolean).join(' · ');
+  });
+  v.addEventListener('error', () => { info.textContent = '视频加载失败，可点击右侧按钮下载观看'; });
+</script>
+</body>
+</html>
